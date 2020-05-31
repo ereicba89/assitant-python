@@ -1,12 +1,16 @@
 import pyglet
 import speech_recognition as sr
 import subprocess
+from command import Commander
+
+running = True
 
 def say(text):
     #whit subpproccess we can pass console commands
     subprocess.call('say ' + text, shell=True)
 
 r = sr.Recognizer()
+cmd = Commander()
 
 def initSpeech():
     print("listening...")
@@ -36,9 +40,14 @@ def initSpeech():
 
     print("your command")
     print(command)
+    if command in ['quit', 'exit', 'bye', 'goodbye']:
+        global running
+        running = False
 
-    say('You said:' + command)
+    cmd.discover(command)
+    # say('You said:' + command)
 
-initSpeech()
+while running == True:
+    initSpeech()
     
 
